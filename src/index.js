@@ -1,21 +1,47 @@
-import * as React from 'react'
+import { useEffect, useState } from 'react'
 
-export const useMyHook = () => {
-  let [{
-    counter
-  }, setState] = React.useState({
-    counter: 0
-  })
+const query = ([mode]) => `(prefers-color-scheme: ${mode})`
 
-  React.useEffect(() => {
-    let interval = window.setInterval(() => {
-      counter++
-      setState({counter})
-    }, 1000)
+const usePrefersColorScheme = () => {
+  const [preferredColorSchema, setPreferredColorSchema] = useState(
+    'no-preference',
+  )
+
+  if (typeof window?.matchMedia !== 'function') {
+    return preferredColorSchema
+  }
+
+  const isDark = window.matchMedia(query`dark`).matches
+  const isLight = window.matchMedia(query`light`).matches
+
+  useEffect(() => {
+    if (isDark) setPreferredColorSchema('dark')
+    else if (isLight) setPreferredColorSchema('light')
+    else setPreferredColorSchema('no-preference')
+  }, [isDark, isLight])
+
+  useEffect(() => {
+    window
+      .matchMedia(query`dark`)
+      .addEventListener(
+        'change',
+        ({ matches }) => matches && setPreferredColorSchema('dark'),
+      )
+
+    window
+      .matchMedia(query`light`)
+      .addEventListener(
+        'change',
+        ({ matches }) => matches && setPreferredColorSchema('light'),
+      )
+
     return () => {
-      window.clearInterval(interval)
+      window.matchMedia(query`dark`).removeEventListener()
+      window.matchMedia(query`light`).removeEventListener()
     }
   }, [])
 
-  return counter
+  return preferredColorSchema
 }
+
+export default usePrefersColorScheme
