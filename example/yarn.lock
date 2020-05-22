@@ -3888,11 +3888,6 @@ escodegen@^1.11.0, escodegen@^1.9.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-1e3-react@^0.1.24:
-  version "0.1.24"
-  resolved "https://registry.yarnpkg.com/eslint-config-1e3-react/-/eslint-config-1e3-react-0.1.24.tgz#59430c99f2f01ac51ecf7fa33bf5cdbb0a6a7888"
-  integrity sha512-jFd49TJsCrboHG4TBysrNGhqVicPd4Yabo8EyHajcFY/X7CN3F1S8RfRjUQi4ZsfwEPA/qE00rMmfiP0iSTcaQ==
-
 eslint-config-react-app@^5.2.1:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/eslint-config-react-app/-/eslint-config-react-app-5.2.1.tgz#698bf7aeee27f0cea0139eaef261c7bf7dd623df"

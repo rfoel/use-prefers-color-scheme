@@ -7,7 +7,7 @@ const usePrefersColorScheme = () => {
     'no-preference',
   )
 
-  if (typeof window?.matchMedia !== 'function') {
+  if (typeof window.matchMedia !== 'function') {
     return preferredColorSchema
   }
 
@@ -21,19 +21,25 @@ const usePrefersColorScheme = () => {
   }, [isDark, isLight])
 
   useEffect(() => {
-    window
-      .matchMedia(query`dark`)
-      .addEventListener(
-        'change',
-        ({ matches }) => matches && setPreferredColorSchema('dark'),
-      )
+    try {
+      window
+        .matchMedia(query`dark`)
+        .addEventListener(
+          'change',
+          ({ matches }) => matches && setPreferredColorSchema('dark'),
+        )
 
-    window
-      .matchMedia(query`light`)
-      .addEventListener(
-        'change',
-        ({ matches }) => matches && setPreferredColorSchema('light'),
-      )
+      window
+        .matchMedia(query`light`)
+        .addEventListener(
+          'change',
+          ({ matches }) => matches && setPreferredColorSchema('light'),
+        )
+    } catch (error) {
+      window
+        .matchMedia(query`dark`)
+        .addListener(() => setPreferredColorSchema(isDark ? 'light' : 'dark'))
+    }
 
     return () => {
       window.matchMedia(query`dark`).removeEventListener()
