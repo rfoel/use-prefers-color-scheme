@@ -1,20 +1,18 @@
 import { useEffect, useState } from 'react'
 
 const query = ([mode]) => `(prefers-color-scheme: ${mode})`
-const darkQuery = window.matchMedia?.(query`dark`)
-const lightQuery = window.matchMedia?.(query`light`)
 
 const usePrefersColorScheme = () => {
-  const isDark = darkQuery?.matches
-  const isLight = lightQuery?.matches
-
   const [preferredColorSchema, setPreferredColorSchema] = useState(
-    isDark ? 'dark' : isLight ? 'light' : 'no-preference',
+    'no-preference',
   )
 
   if (typeof window.matchMedia !== 'function') {
     return preferredColorSchema
   }
+
+  const isDark = window.matchMedia(query`dark`).matches
+  const isLight = window.matchMedia(query`light`).matches
 
   useEffect(() => {
     if (isDark) setPreferredColorSchema('dark')
@@ -23,38 +21,29 @@ const usePrefersColorScheme = () => {
   }, [isDark, isLight])
 
   useEffect(() => {
-    if (typeof darkQuery!.addEventListener === 'function') {
-      // In modern browsers MediaQueryList should subclass EventTarget
-      // https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList
-      
-      const darkListener = ({ matches }) => matches && setPreferredColorSchema('dark')
-      const lightListener = ({ matches }) => matches && setPreferredColorSchema('light')
+    try {
+      window
+        .matchMedia(query`dark`)
+        .addEventListener(
+          'change',
+          ({ matches }) => matches && setPreferredColorSchema('dark'),
+        )
 
-      darkQuery!.addEventListener('change', darkListener)
-      lightQuery!.addEventListener('change', lightListener)
+      window
+        .matchMedia(query`light`)
+        .addEventListener(
+          'change',
+          ({ matches }) => matches && setPreferredColorSchema('light'),
+        )
+    } catch (error) {
+      window
+        .matchMedia(query`dark`)
+        .addListener(() => setPreferredColorSchema(isDark ? 'light' : 'dark'))
+    }
 
-      return () => {
-        darkQuery!.removeEventListener('change', darkListener)
-        lightQuery!.removeEventListener('change', lightListener)
-      }
-    } else {
-      // In some early implementations MediaQueryList existed, but did not
-      // subclass EventTarget
-      
-      // Closing over isDark here would cause it to not update when
-      // `darkQuery.matches` changes
-      const listener = () => setPreferredColorScheme(darkQuery.matches ? 'dark' : lightQuery.matches ? 'light' : 'no-preference'))
-
-      // This is two state updates if a user changes from dark to light, but
-      // both state updates will be consistent and should be batched by React,
-      // resulting in only one re-render
-      darkQuery!.addListener(listener)
-      lightQuery!.addListener(listener)
-      
-      return () => {
-        darkQuery!.removeListener(listener)
-        lightQuery!.removeListener(listener)
-      }
+    return () => {
+      window.matchMedia(query`dark`).removeEventListener()
+      window.matchMedia(query`light`).removeEventListener()
     }
   }, [])
 
