@@ -43,7 +43,7 @@ const usePrefersColorScheme = () => {
       
       // Closing over isDark here would cause it to not update when
       // `darkQuery.matches` changes
-      const listener = () => setPreferredColorScheme(darkQuery.matches ? 'dark' : lightQuery.matches ? 'light' : 'no-preference'))
+      const listener = () => setPreferredColorSchema(darkQuery.matches ? 'dark' : lightQuery.matches ? 'light' : 'no-preference'))
 
       // This is two state updates if a user changes from dark to light, but
       // both state updates will be consistent and should be batched by React,
