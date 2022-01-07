@@ -19,8 +19,8 @@ import React from 'react'
 import usePrefersColorScheme from 'use-prefers-color-scheme'
 
 const App = () => {
-  const preferredColorSchema = usePrefersColorScheme()
-  const isDarkMode = preferredColorSchema === 'dark'
+  const prefersColorScheme = usePrefersColorScheme()
+  const isDarkMode = prefersColorScheme === 'dark'
 
   return (
     <div>You are using {isDarkMode ? 'Dark Mode 🌚' : 'Light Mode 🌞'}!</div>
