@@ -1,6 +1,6 @@
 {
   "name": "use-prefers-color-scheme",
-  "version": "0.1.2-rc.4",
+  "version": "1.0.0",
   "description": "React hook for determining the preferred color scheme",
   "author": "rfoel",
   "license": "MIT",
