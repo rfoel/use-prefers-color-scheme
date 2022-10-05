@@ -4,19 +4,15 @@
   "version": "0.0.0",
   "license": "MIT",
   "private": true,
-  "dependencies": {
-    "prop-types": "^15.6.2",
-    "react": "link:../node_modules/react",
-    "react-dom": "^16.9.0",
-    "react-scripts": "^3.0.1",
-    "styled-components": "^5.1.0",
-    "use-prefers-color-scheme": "link:.."
-  },
   "scripts": {
-    "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "react-scripts start"
+  },
+  "dependencies": {
+    "react": "file:../node_modules/react",
+    "react-dom": "^16.14.0",
+    "react-scripts": "^5.0.1",
+    "use-prefers-color-scheme": "file:.."
   },
   "browserslist": [
     ">0.2%",
