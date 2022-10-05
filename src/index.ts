@@ -12,10 +12,6 @@ const usePrefersColorScheme = () => {
     'dark' | 'light' | 'no-preference'
   >(isDark ? 'dark' : isLight ? 'light' : 'no-preference')
 
-  if (typeof window.matchMedia !== 'function') {
-    return preferredColorSchema
-  }
-
   useEffect(() => {
     if (isDark) setPreferredColorSchema('dark')
     else if (isLight) setPreferredColorSchema('light')
@@ -23,7 +19,7 @@ const usePrefersColorScheme = () => {
   }, [isDark, isLight])
 
   useEffect(() => {
-    if (typeof darkQuery!.addEventListener === 'function') {
+    if (typeof darkQuery?.addEventListener === 'function') {
       // In modern browsers MediaQueryList should subclass EventTarget
       // https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList
 
@@ -32,12 +28,12 @@ const usePrefersColorScheme = () => {
       const lightListener = ({ matches }) =>
         matches && setPreferredColorSchema('light')
 
-      darkQuery!.addEventListener('change', darkListener)
-      lightQuery!.addEventListener('change', lightListener)
+      darkQuery?.addEventListener('change', darkListener)
+      lightQuery?.addEventListener('change', lightListener)
 
       return () => {
-        darkQuery!.removeEventListener('change', darkListener)
-        lightQuery!.removeEventListener('change', lightListener)
+        darkQuery?.removeEventListener('change', darkListener)
+        lightQuery?.removeEventListener('change', lightListener)
       }
     } else {
       // In some early implementations MediaQueryList existed, but did not
@@ -57,15 +53,19 @@ const usePrefersColorScheme = () => {
       // This is two state updates if a user changes from dark to light, but
       // both state updates will be consistent and should be batched by React,
       // resulting in only one re-render
-      darkQuery!.addEventListener('change', listener)
-      lightQuery!.addEventListener('change', listener)
+      darkQuery?.addEventListener('change', listener)
+      lightQuery?.addEventListener('change', listener)
 
       return () => {
-        darkQuery!.removeEventListener('change', listener)
-        lightQuery!.removeEventListener('change', listener)
+        darkQuery?.removeEventListener('change', listener)
+        lightQuery?.removeEventListener('change', listener)
       }
     }
   }, [])
+
+  if (typeof window.matchMedia !== 'function') {
+    return preferredColorSchema
+  }
 
   return preferredColorSchema
 }
