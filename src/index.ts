@@ -1,71 +1,69 @@
-import { useEffect, useState } from 'react'
+import * as React from 'react'
 
-const darkQuery = window.matchMedia?.('(prefers-color-scheme: dark)')
-
-const lightQuery = window.matchMedia?.('(prefers-color-scheme: light)')
-
-const usePrefersColorScheme = () => {
-  const isDark = darkQuery?.matches
-  const isLight = lightQuery?.matches
-
-  const [preferredColorSchema, setPreferredColorSchema] = useState<
+export const usePrefersColorScheme = () => {
+  const [preferredColorSchema, setPreferredColorSchema] = React.useState<
     'dark' | 'light' | 'no-preference'
-  >(isDark ? 'dark' : isLight ? 'light' : 'no-preference')
+  >('no-preference')
 
-  useEffect(() => {
-    if (isDark) setPreferredColorSchema('dark')
-    else if (isLight) setPreferredColorSchema('light')
-    else setPreferredColorSchema('no-preference')
-  }, [isDark, isLight])
+  // On first render:
+  //   - Ensure window.matchMedia is supported
+  //   - Initialize MediaQueryList objects
+  //   - Check initial state
+  //   - Subscribe on changes
+  React.useEffect(() => {
+    if (typeof window.matchMedia !== 'function') return
 
-  useEffect(() => {
-    if (typeof darkQuery?.addEventListener === 'function') {
+    // 1. define MediaQueryList observables
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)')
+    const isLight = window.matchMedia('(prefers-color-scheme: light)')
+
+    // 2. get initial state
+    setPreferredColorSchema(
+      isDark.matches ? 'dark' : isLight.matches ? 'light' : 'no-preference'
+    )
+
+    // 3. subscribe on changes
+    //
+    // Is modern "matchMedia" implementation ???
+    if (typeof isLight.addEventListener === 'function') {
       // In modern browsers MediaQueryList should subclass EventTarget
       // https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList
-
-      const darkListener = ({ matches }) =>
+      const darkListener = ({ matches }: MediaQueryListEvent) => {
         matches && setPreferredColorSchema('dark')
-      const lightListener = ({ matches }) =>
-        matches && setPreferredColorSchema('light')
-
-      darkQuery?.addEventListener('change', darkListener)
-      lightQuery?.addEventListener('change', lightListener)
-
-      return () => {
-        darkQuery?.removeEventListener('change', darkListener)
-        lightQuery?.removeEventListener('change', lightListener)
       }
-    } else {
+      const lightListener = ({ matches }: MediaQueryListEvent) => {
+        matches && setPreferredColorSchema('light')
+      }
+      isDark.addEventListener('change', darkListener)
+      isLight.addEventListener('change', lightListener)
+      return () => {
+        isDark.removeEventListener('change', darkListener)
+        isLight.removeEventListener('change', lightListener)
+      }
+    }
+
+    // Is the old "matchMedia" implementation ???
+    if (typeof isLight.addListener === 'function') {
       // In some early implementations MediaQueryList existed, but did not
       // subclass EventTarget
-
-      // Closing over isDark here would cause it to not update when
-      // `darkQuery.matches` changes
       const listener = () =>
         setPreferredColorSchema(
-          darkQuery.matches
-            ? 'dark'
-            : lightQuery.matches
-            ? 'light'
-            : 'no-preference',
+          isDark.matches ? 'dark' : isLight.matches ? 'light' : 'no-preference'
         )
-
       // This is two state updates if a user changes from dark to light, but
       // both state updates will be consistent and should be batched by React,
       // resulting in only one re-render
-      darkQuery?.addEventListener('change', listener)
-      lightQuery?.addEventListener('change', listener)
-
+      isDark.addListener(listener)
+      isLight.addListener(listener)
       return () => {
-        darkQuery?.removeEventListener('change', listener)
-        lightQuery?.removeEventListener('change', listener)
+        isDark.removeListener(listener)
+        isLight.removeListener(listener)
       }
     }
-  }, [])
 
-  if (typeof window.matchMedia !== 'function') {
-    return preferredColorSchema
-  }
+    // Is an unknown implementation case ???
+    return
+  }, [])
 
   return preferredColorSchema
 }
