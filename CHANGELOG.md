@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/rfoel/use-prefers-color-scheme/compare/v1.0.0...v1.1.0) (2022-10-17)
+
+
+### Features
+
+* refactor code to support server-side-rendering (SSR) ([#9](https://github.com/rfoel/use-prefers-color-scheme/issues/9)) ([622e18f](https://github.com/rfoel/use-prefers-color-scheme/commit/622e18f30acba2088d0b243fc3b3aa60d47fd609))
+
 # 1.0.0 (2022-10-05)
 
 
