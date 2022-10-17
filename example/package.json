@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "react": "file:../node_modules/react",
-    "react-dom": "^18.2.0",
+    "react-dom": "file:../node_modules/react-dom",
     "react-scripts": "^5.0.1",
     "use-prefers-color-scheme": "file:.."
   },
