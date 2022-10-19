@@ -1,5 +1,12 @@
 import * as React from 'react'
 
+/**
+ * React hook for determining the preferred color scheme (aka 'prefers-color-scheme').  
+ * When server side rendered returns `no-preference`.
+ * 
+ * @see [Usage] https://github.com/rfoel/use-prefers-color-scheme#usage 
+ * @returns {string} String, one of `dark`, `light`, `no-preference`
+ */
 export const usePrefersColorScheme = () => {
   const [preferredColorSchema, setPreferredColorSchema] = React.useState<
     'dark' | 'light' | 'no-preference'
