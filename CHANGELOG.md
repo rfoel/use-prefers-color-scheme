@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/rfoel/use-prefers-color-scheme/compare/v1.1.0...v1.1.1) (2022-10-19)
+
+
+### Bug Fixes
+
+* added function description for intellisense ([#12](https://github.com/rfoel/use-prefers-color-scheme/issues/12)) ([77c8d5d](https://github.com/rfoel/use-prefers-color-scheme/commit/77c8d5daa44af3b724ae8c06af5f1c6a2d6d3b3e))
+
 # [1.1.0](https://github.com/rfoel/use-prefers-color-scheme/compare/v1.0.0...v1.1.0) (2022-10-17)
 
 
