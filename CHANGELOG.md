@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/rfoel/use-prefers-color-scheme/compare/v1.1.1...v1.1.2) (2023-01-23)
+
+
+### Bug Fixes
+
+* prevent flash of wrong theme ([40190c4](https://github.com/rfoel/use-prefers-color-scheme/commit/40190c49948170a46a117eef4f5d232ebb2beccf))
+
 ## [1.1.1](https://github.com/rfoel/use-prefers-color-scheme/compare/v1.1.0...v1.1.1) (2022-10-19)
 
 
