@@ -10,7 +10,17 @@ import * as React from 'react'
 export const usePrefersColorScheme = () => {
   const [preferredColorSchema, setPreferredColorSchema] = React.useState<
     'dark' | 'light' | 'no-preference'
-  >('no-preference')
+  >(() => {
+    // if window.matchMedia is not supported (SSR), return 'no-preference'
+    if (typeof window.matchMedia !== 'function') return 'no-preference'
+
+    // since window.matchMedia is synchronous we can initialize the state with the right value
+    // preventing a flash of wrong theme on first render
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)')
+    const isLight = window.matchMedia('(prefers-color-scheme: light)')
+
+    return isDark.matches ? 'dark' : isLight.matches ? 'light' : 'no-preference'
+  })
 
   // On first render:
   //   - Ensure window.matchMedia is supported
@@ -24,12 +34,7 @@ export const usePrefersColorScheme = () => {
     const isDark = window.matchMedia('(prefers-color-scheme: dark)')
     const isLight = window.matchMedia('(prefers-color-scheme: light)')
 
-    // 2. get initial state
-    setPreferredColorSchema(
-      isDark.matches ? 'dark' : isLight.matches ? 'light' : 'no-preference'
-    )
-
-    // 3. subscribe on changes
+    // 2. subscribe on changes
     //
     // Is modern "matchMedia" implementation ???
     if (typeof isLight.addEventListener === 'function') {
