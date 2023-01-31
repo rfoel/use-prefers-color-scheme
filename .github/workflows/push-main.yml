@@ -98,11 +98,13 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: 🏗 Build
-        run: npm run build
+        run: |
+          cd example/
+          npm run build
 
       - uses: actions/upload-pages-artifact@v1
         with:
-          path: ./dist
+          path: ./example/dist
 
   deploy:
     needs: [build]
