@@ -12,45 +12,47 @@
     "dist"
   ],
   "scripts": {
-    "build:cjs": "esbuild src/index.ts --bundle --sourcemap --minify --outfile=dist/index.cjs.js --external:react",
-    "build:esm": "esbuild src/index.ts --bundle --sourcemap --minify --format=esm --outfile=dist/index.esm.js --external:react",
+    "build:cjs": "esbuild src/index.ts --bundle --sourcemap --minify --format=cjs --outfile=dist/index.cjs.js --external:react --target=esnext,node12.22.0",
+    "build:esm": "esbuild src/index.ts --bundle --sourcemap --minify --format=esm --outfile=dist/index.esm.js --external:react --target=esnext,node12.22.0",
     "build": "npm run build:cjs && npm run build:esm",
-    "deploy": "gh-pages -d example/build",
-    "lint": "eslint . --fix",
-    "postbuild": "npm run types",
+    "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
+    "postbuild": "tsc --project tsconfig.build.json",
     "prebuild": "rimraf dist",
-    "predeploy": "cd example && npm install && npm run build",
-    "start": "rollup -c -w",
-    "test:watch": "react-scripts test",
-    "test": "react-scripts test",
-    "types": "tsc --project tsconfig.build.json"
+    "test": "vitest",
+    "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
     "react": ">= 16.8.0"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/changelog": "^6.0.2",
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^8.0.6",
-    "@semantic-release/npm": "^9.0.1",
+    "@semantic-release/github": "^8.0.7",
+    "@semantic-release/npm": "^9.0.2",
     "@semantic-release/release-notes-generator": "^10.0.3",
+    "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
-    "@types/jest": "^29.1.1",
-    "@types/react": "^18.0.21",
-    "esbuild": "^0.15.10",
-    "gh-pages": "^4.0.0",
-    "prettier": "^2.7.1",
+    "@types/jest": "^29.4.0",
+    "@types/react": "^18.0.27",
+    "@vitejs/plugin-react": "^3.0.1",
+    "esbuild": "^0.17.5",
+    "eslint": "^8.33.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jsdom": "^21.1.0",
+    "prettier": "^2.8.3",
     "react": "^18.2.0",
     "react-scripts": "^5.0.1",
-    "rimraf": "^3.0.2",
-    "typescript": "^4.8.4"
+    "rimraf": "^4.1.2",
+    "semantic-release": "^20.1.0",
+    "typescript": "^4.9.5",
+    "vitest": "^0.28.3"
   },
   "engines": {
     "node": ">=8",
     "npm": ">=5"
-  },
-  "dependencies": {
-    "eslint": "^8.24.0"
   }
 }

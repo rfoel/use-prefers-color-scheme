@@ -1,5 +1,7 @@
 import { renderHook } from '@testing-library/react'
-import usePrefersColorScheme from '.'
+import { describe, it, expect } from 'vitest'
+
+import usePrefersColorScheme from '../src'
 
 describe('usePrefersColorScheme', () => {
   it('returns preferred color scheme', () => {

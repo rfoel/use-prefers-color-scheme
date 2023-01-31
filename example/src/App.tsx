@@ -6,9 +6,11 @@ const App = () => {
   const isDarkMode = preferredColorSchema === 'dark'
 
   useEffect(() => {
-    const favicon = document.querySelector('.favicon')
-    if (isDarkMode) favicon.href = 'dark.png'
-    else favicon.href = 'light.png'
+    const favicon = document.querySelector<HTMLLinkElement>('.favicon')
+    if (favicon) {
+      if (isDarkMode) favicon.href = 'dark.png'
+      else favicon.href = 'light.png'
+    }
   })
 
   return (

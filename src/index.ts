@@ -1,10 +1,10 @@
 import * as React from 'react'
 
 /**
- * React hook for determining the preferred color scheme (aka 'prefers-color-scheme').  
+ * React hook for determining the preferred color scheme (aka 'prefers-color-scheme').
  * When server side rendered returns `no-preference`.
- * 
- * @see [Usage] https://github.com/rfoel/use-prefers-color-scheme#usage 
+ *
+ * @see [Usage] https://github.com/rfoel/use-prefers-color-scheme#usage
  * @returns {string} String, one of `dark`, `light`, `no-preference`
  */
 export const usePrefersColorScheme = () => {
@@ -60,7 +60,7 @@ export const usePrefersColorScheme = () => {
       // subclass EventTarget
       const listener = () =>
         setPreferredColorSchema(
-          isDark.matches ? 'dark' : isLight.matches ? 'light' : 'no-preference'
+          isDark.matches ? 'dark' : isLight.matches ? 'light' : 'no-preference',
         )
       // This is two state updates if a user changes from dark to light, but
       // both state updates will be consistent and should be batched by React,
