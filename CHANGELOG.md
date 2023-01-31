@@ -1,3 +1,11 @@
+## [1.1.3](https://github.com/rfoel/use-prefers-color-scheme/compare/v1.1.2...v1.1.3) (2023-01-31)
+
+
+### Bug Fixes
+
+* fix build ([0943d0e](https://github.com/rfoel/use-prefers-color-scheme/commit/0943d0e88105beca9c4e8c1887e999c586d69bdb))
+* fix ssr ([6b0b94a](https://github.com/rfoel/use-prefers-color-scheme/commit/6b0b94afd71fba1df3a30b133562f5d24bbacca2))
+
 ## [1.1.2](https://github.com/rfoel/use-prefers-color-scheme/compare/v1.1.1...v1.1.2) (2023-01-23)
 
 
