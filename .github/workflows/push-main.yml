@@ -45,6 +45,9 @@ jobs:
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
 
+      - name: 🏗 Build
+        run: npm run build
+
       - name: 🔎 Type check
         run: npm run typecheck --if-present
 
@@ -66,6 +69,9 @@ jobs:
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
+
+      - name: 🏗 Build
+        run: npm run build
 
       - name: 📦 Release
         run: npx semantic-release
