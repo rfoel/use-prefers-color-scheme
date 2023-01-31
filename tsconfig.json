@@ -28,5 +28,5 @@
     "strictNullChecks": true,
     "target": "es6"
   },
-  "exclude": ["node_modules", "**/*.d.ts", "**/dist/*"]
+  "exclude": ["node_modules", "**/*.d.ts", "**/dist/*", "example"]
 }
