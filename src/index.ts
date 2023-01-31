@@ -11,8 +11,8 @@ export const usePrefersColorScheme = () => {
   const [preferredColorSchema, setPreferredColorSchema] = React.useState<
     'dark' | 'light' | 'no-preference'
   >(() => {
-    // if window.matchMedia is not supported (SSR), return 'no-preference'
-    if (typeof window.matchMedia !== 'function') return 'no-preference'
+    // if window is undefined (SSR), return 'no-preference'
+    if (typeof window === 'undefined') return 'no-preference'
 
     // since window.matchMedia is synchronous we can initialize the state with the right value
     // preventing a flash of wrong theme on first render
