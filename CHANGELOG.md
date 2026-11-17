@@ -1,3 +1,14 @@
+# [2.0.0](https://github.com/rfoel/use-prefers-color-scheme/compare/v1.1.3...v2.0.0) (2026-11-17)
+
+* feat!: rewrite on useSyncExternalStore and modernize tooling ([ec59c88](https://github.com/rfoel/use-prefers-color-scheme/commit/ec59c88299e9bbde5cbaedf91d1120729da0cf2b)), closes [#76](https://github.com/rfoel/use-prefers-color-scheme/issues/76)
+
+### BREAKING CHANGES
+
+* requires React 18 or newer. Browsers without
+  MediaQueryList.addEventListener (Safari 13 and older) are no longer
+  supported. The package now has an exports map, so deep imports into
+  dist/ no longer resolve.
+
 ## [1.1.3](https://github.com/rfoel/use-prefers-color-scheme/compare/v1.1.2...v1.1.3) (2023-01-31)
 
 
