@@ -1,12 +1,21 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directory: '/'
+    directory: /
     schedule:
-      interval: daily
-      time: '08:00'
-    open-pull-requests-limit: 10
-    target-branch: main
+      interval: monthly
+    groups:
+      dependencies:
+        patterns: ['*']
     commit-message:
-      prefix: fix
-      prefix-development: chore
+      prefix: chore
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ['*']
+    commit-message:
+      prefix: ci

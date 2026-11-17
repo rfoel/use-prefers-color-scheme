@@ -1,83 +1,47 @@
-import * as React from 'react'
+import { useSyncExternalStore } from 'react'
+
+export type ColorScheme = 'dark' | 'light' | 'no-preference'
+
+const DARK_QUERY = '(prefers-color-scheme: dark)'
+const LIGHT_QUERY = '(prefers-color-scheme: light)'
+
+const isSupported = (): boolean =>
+  typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+
+const subscribe = (onChange: () => void): (() => void) => {
+  if (!isSupported()) return () => {}
+
+  const queries = [
+    window.matchMedia(DARK_QUERY),
+    window.matchMedia(LIGHT_QUERY),
+  ]
+  for (const query of queries) query.addEventListener('change', onChange)
+
+  return () => {
+    for (const query of queries) query.removeEventListener('change', onChange)
+  }
+}
+
+const getSnapshot = (): ColorScheme => {
+  if (!isSupported()) return 'no-preference'
+  if (window.matchMedia(DARK_QUERY).matches) return 'dark'
+  if (window.matchMedia(LIGHT_QUERY).matches) return 'light'
+  return 'no-preference'
+}
+
+const getServerSnapshot = (): ColorScheme => 'no-preference'
 
 /**
- * React hook for determining the preferred color scheme (aka 'prefers-color-scheme').
- * When server side rendered returns `no-preference`.
+ * React hook that returns the user's preferred color scheme
+ * (`prefers-color-scheme`) and re-renders when it changes.
  *
- * @see [Usage] https://github.com/rfoel/use-prefers-color-scheme#usage
- * @returns {string} String, one of `dark`, `light`, `no-preference`
+ * Returns `no-preference` on the server, during hydration and in environments
+ * without `window.matchMedia`, so server and client markup always match.
+ *
+ * @see https://github.com/rfoel/use-prefers-color-scheme#usage
  */
-export const usePrefersColorScheme = () => {
-  const [preferredColorSchema, setPreferredColorSchema] = React.useState<
-    'dark' | 'light' | 'no-preference'
-  >(() => {
-    // if window is undefined (SSR), return 'no-preference'
-    if (typeof window === 'undefined') return 'no-preference'
-
-    // since window.matchMedia is synchronous we can initialize the state with the right value
-    // preventing a flash of wrong theme on first render
-    const isDark = window.matchMedia('(prefers-color-scheme: dark)')
-    const isLight = window.matchMedia('(prefers-color-scheme: light)')
-
-    return isDark.matches ? 'dark' : isLight.matches ? 'light' : 'no-preference'
-  })
-
-  // On first render:
-  //   - Ensure window.matchMedia is supported
-  //   - Initialize MediaQueryList objects
-  //   - Check initial state
-  //   - Subscribe on changes
-  React.useEffect(() => {
-    if (typeof window.matchMedia !== 'function') return
-
-    // 1. define MediaQueryList observables
-    const isDark = window.matchMedia('(prefers-color-scheme: dark)')
-    const isLight = window.matchMedia('(prefers-color-scheme: light)')
-
-    // 2. subscribe on changes
-    //
-    // Is modern "matchMedia" implementation ???
-    if (typeof isLight.addEventListener === 'function') {
-      // In modern browsers MediaQueryList should subclass EventTarget
-      // https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList
-      const darkListener = ({ matches }: MediaQueryListEvent) => {
-        matches && setPreferredColorSchema('dark')
-      }
-      const lightListener = ({ matches }: MediaQueryListEvent) => {
-        matches && setPreferredColorSchema('light')
-      }
-      isDark.addEventListener('change', darkListener)
-      isLight.addEventListener('change', lightListener)
-      return () => {
-        isDark.removeEventListener('change', darkListener)
-        isLight.removeEventListener('change', lightListener)
-      }
-    }
-
-    // Is the old "matchMedia" implementation ???
-    if (typeof isLight.addListener === 'function') {
-      // In some early implementations MediaQueryList existed, but did not
-      // subclass EventTarget
-      const listener = () =>
-        setPreferredColorSchema(
-          isDark.matches ? 'dark' : isLight.matches ? 'light' : 'no-preference',
-        )
-      // This is two state updates if a user changes from dark to light, but
-      // both state updates will be consistent and should be batched by React,
-      // resulting in only one re-render
-      isDark.addListener(listener)
-      isLight.addListener(listener)
-      return () => {
-        isDark.removeListener(listener)
-        isLight.removeListener(listener)
-      }
-    }
-
-    // Is an unknown implementation case ???
-    return
-  }, [])
-
-  return preferredColorSchema
+export function usePrefersColorScheme(): ColorScheme {
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 }
 
 export default usePrefersColorScheme

@@ -1,32 +1,17 @@
 {
   "compilerOptions": {
-    "allowJs": false,
-    "alwaysStrict": true,
-    "declaration": true,
-    "declarationMap": true,
-    "emitDecoratorMetadata": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "forceConsistentCasingInFileNames": true,
+    "target": "es2022",
+    "lib": ["es2022", "dom"],
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
     "isolatedModules": true,
-    "jsx": "react",
-    "lib": ["es6", "dom"],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": false,
-    "noLib": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "outDir": "./dist",
-    "removeComments": true,
-    "resolveJsonModule": true,
+    "declaration": true,
+    "isolatedDeclarations": true,
+    "verbatimModuleSyntax": true,
     "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": false,
-    "strictBindCallApply": true,
-    "strictNullChecks": true,
-    "target": "es6"
+    "noEmit": true
   },
-  "exclude": ["node_modules", "**/*.d.ts", "**/dist/*", "example"]
+  "include": ["src", "tests"]
 }

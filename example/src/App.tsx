@@ -1,17 +1,14 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import usePrefersColorScheme from 'use-prefers-color-scheme'
 
 const App = () => {
-  const preferredColorSchema = usePrefersColorScheme()
-  const isDarkMode = preferredColorSchema === 'dark'
+  const colorScheme = usePrefersColorScheme()
+  const isDarkMode = colorScheme === 'dark'
 
   useEffect(() => {
     const favicon = document.querySelector<HTMLLinkElement>('.favicon')
-    if (favicon) {
-      if (isDarkMode) favicon.href = 'dark.png'
-      else favicon.href = 'light.png'
-    }
-  })
+    if (favicon) favicon.href = isDarkMode ? 'dark.png' : 'light.png'
+  }, [isDarkMode])
 
   return (
     <div
